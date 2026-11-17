@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+//import React, { useState, useEffect } from "react";
 import { levelsData } from "@/data/levelsData";
 
-interface UserRecord {
+/*interface UserRecord {
   name: string;
   code: string;
   approved: boolean;
-}
+}*/
 
 interface VocabRow {
   word: string;
@@ -16,7 +16,7 @@ interface VocabRow {
 
 export default function WemStudioApp() {
   // Auth & Admin states
-  const [mounted, setMounted] = useState(false);
+/*  const [mounted, setMounted] = useState(false);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [usersDB, setUsersDB] = useState<UserRecord[]>([]);
@@ -28,7 +28,7 @@ export default function WemStudioApp() {
   const [userNameInput, setUserNameInput] = useState("");
   const [accessCodeInput, setAccessCodeInput] = useState("");
   const [adminPassInput, setAdminPassInput] = useState("");
-
+*/
   // Navigation & Active Levels
   const [activeTab, setActiveTab] = useState<"journal" | "roadmap" | "test" | "calculator" | "starters" | "community">("journal");
   const [selectedLevel, setSelectedLevel] = useState<"A1" | "A2" | "B1" | "B2">("A1");
@@ -67,7 +67,7 @@ export default function WemStudioApp() {
   const [calcHours, setCalcHours] = useState("1");
   const [calcResult, setCalcResult] = useState("");
 
-  useEffect(() => {
+/*  useEffect(() => {
     setMounted(true);
     const savedUser = localStorage.getItem("wem_user");
     const savedAdmin = localStorage.getItem("wem_is_admin") === "true";
@@ -87,14 +87,14 @@ export default function WemStudioApp() {
     }
   }, []);
 
-  if (!mounted) return null;
+  if (!mounted) return null;*/
 
   const handleLevelChange = (lvl: "A1" | "A2" | "B1" | "B2") => {
     setSelectedLevel(lvl);
     setSelectedTopic(levelsData[lvl].topics[0]);
   };
 
-  const handleSubmitRequest = () => {
+/*  const handleSubmitRequest = () => {
     const name = userNameInput.trim();
     const code = accessCodeInput.trim();
     if (!name || !code) {
@@ -155,7 +155,7 @@ export default function WemStudioApp() {
     setIsAdmin(false);
     setIsPending(false);
   };
-
+*/
   const updateVocab = (
     list: VocabRow[],
     setter: React.Dispatch<React.SetStateAction<VocabRow[]>>,
@@ -216,7 +216,7 @@ export default function WemStudioApp() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* بوابة الدخول والتسجيل */}
+     {/* بوابة الدخول والتسجيل */}
       {!currentUser && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 border border-gray-100">
