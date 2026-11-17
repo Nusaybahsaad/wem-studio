@@ -1,13 +1,8 @@
 "use client";
 
-//import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { levelsData } from "@/data/levelsData";
 
-/*interface UserRecord {
-  name: string;
-  code: string;
-  approved: boolean;
-}*/
 
 interface VocabRow {
   word: string;
@@ -15,20 +10,7 @@ interface VocabRow {
 }
 
 export default function WemStudioApp() {
-  // Auth & Admin states
-/*  const [mounted, setMounted] = useState(false);
-  const [currentUser, setCurrentUser] = useState<string | null>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [usersDB, setUsersDB] = useState<UserRecord[]>([]);
-  const [isPending, setIsPending] = useState(false);
-  const [showAdminLogin, setShowAdminLogin] = useState(false);
-  const [showAdminPanel, setShowAdminPanel] = useState(false);
 
-  // Inputs for Auth
-  const [userNameInput, setUserNameInput] = useState("");
-  const [accessCodeInput, setAccessCodeInput] = useState("");
-  const [adminPassInput, setAdminPassInput] = useState("");
-*/
   // Navigation & Active Levels
   const [activeTab, setActiveTab] = useState<"journal" | "roadmap" | "test" | "calculator" | "starters" | "community">("journal");
   const [selectedLevel, setSelectedLevel] = useState<"A1" | "A2" | "B1" | "B2">("A1");
@@ -67,95 +49,13 @@ export default function WemStudioApp() {
   const [calcHours, setCalcHours] = useState("1");
   const [calcResult, setCalcResult] = useState("");
 
-/*  useEffect(() => {
-    setMounted(true);
-    const savedUser = localStorage.getItem("wem_user");
-    const savedAdmin = localStorage.getItem("wem_is_admin") === "true";
-    const savedDB: UserRecord[] = JSON.parse(localStorage.getItem("wem_users_db") || "[]");
-    setUsersDB(savedDB);
-
-    if (savedAdmin) {
-      setIsAdmin(true);
-      setCurrentUser("وئام (المشرفة)");
-    } else if (savedUser) {
-      const userObj = savedDB.find((u) => u.name === savedUser);
-      if (userObj && userObj.approved) {
-        setCurrentUser(savedUser);
-      } else {
-        setIsPending(true);
-      }
-    }
-  }, []);
-
-  if (!mounted) return null;*/
 
   const handleLevelChange = (lvl: "A1" | "A2" | "B1" | "B2") => {
     setSelectedLevel(lvl);
     setSelectedTopic(levelsData[lvl].topics[0]);
   };
 
-/*  const handleSubmitRequest = () => {
-    const name = userNameInput.trim();
-    const code = accessCodeInput.trim();
-    if (!name || !code) {
-      alert("الرجاء إدخال الاسم والكود");
-      return;
-    }
-    const existing = usersDB.find((u) => u.name === name);
-    let updatedDB = [...usersDB];
-    if (!existing) {
-      updatedDB.push({ name, code, approved: false });
-      setUsersDB(updatedDB);
-      localStorage.setItem("wem_users_db", JSON.stringify(updatedDB));
-    }
-    localStorage.setItem("wem_user", name);
-    setIsPending(true);
-  };
 
-  const handleCheckStatus = () => {
-    const savedUser = localStorage.getItem("wem_user");
-    const freshDB: UserRecord[] = JSON.parse(localStorage.getItem("wem_users_db") || "[]");
-    setUsersDB(freshDB);
-    const userObj = freshDB.find((u) => u.name === savedUser);
-    if (userObj && userObj.approved && savedUser) {
-      setCurrentUser(savedUser);
-      setIsPending(false);
-    } else {
-      alert("لم يتم قبول الطلب بعد من قبل المشرف.");
-    }
-  };
-
-  const handleVerifyAdmin = () => {
-    if (adminPassInput === "wem2026") {
-      localStorage.setItem("wem_is_admin", "true");
-      setShowAdminPanel(true);
-    } else {
-      alert("كلمة المرور غير صحيحة");
-    }
-  };
-
-  const handleEnterAsAdmin = () => {
-    localStorage.setItem("wem_is_admin", "true");
-    setIsAdmin(true);
-    setCurrentUser("وئام (المشرفة)");
-    setShowAdminPanel(false);
-  };
-
-  const handleApproveUser = (index: number) => {
-    const updatedDB = [...usersDB];
-    updatedDB[index].approved = true;
-    setUsersDB(updatedDB);
-    localStorage.setItem("wem_users_db", JSON.stringify(updatedDB));
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("wem_user");
-    localStorage.removeItem("wem_is_admin");
-    setCurrentUser(null);
-    setIsAdmin(false);
-    setIsPending(false);
-  };
-*/
   const updateVocab = (
     list: VocabRow[],
     setter: React.Dispatch<React.SetStateAction<VocabRow[]>>,
@@ -216,172 +116,9 @@ export default function WemStudioApp() {
 
   return (
     <div className="min-h-screen flex flex-col">
-     {/* بوابة الدخول والتسجيل */}
-      {!currentUser && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 border border-gray-100">
-            <div className="text-center mb-6">
-              <h1 className="text-2xl font-extrabold text-[#1E3A8A] mb-2">Wem Studio</h1>
-              <p className="text-sm text-gray-500">نظام تعلم اللغة الإنجليزية ومساحة التدوين اليومية</p>
-            </div>
 
-            {!isPending ? (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">الاسم الكريم</label>
-                  <input
-                    type="text"
-                    value={userNameInput}
-                    onChange={(e) => setUserNameInput(e.target.value)}
-                    className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#1E3A8A] outline-none text-sm"
-                    placeholder="أدخل اسمك الكامل"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">كود الدعوة / رقم الطلب</label>
-                  <input
-                    type="password"
-                    value={accessCodeInput}
-                    onChange={(e) => setAccessCodeInput(e.target.value)}
-                    className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#1E3A8A] outline-none text-sm"
-                    placeholder="أدخل كود الدعوة الخاص بك"
-                  />
-                </div>
-                <button
-                  onClick={handleSubmitRequest}
-                  className="w-full bg-[#1E3A8A] text-white py-3 rounded-xl font-semibold hover:bg-blue-900 transition shadow-lg"
-                >
-                  إرسال طلب الانضمام
-                </button>
-                <div className="text-left mt-2 flex justify-between items-center">
-                  <span className="text-xs text-gray-400">يتطلب موافقة المشرف</span>
-                  <button
-                    onClick={() => setShowAdminLogin(!showAdminLogin)}
-                    className="text-xs text-[#1E3A8A] font-bold underline"
-                  >
-                    لوحة المشرف (Admin)
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="text-center py-6">
-                <div className="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
-                  ⏳
-                </div>
-                <h3 className="font-bold text-lg text-gray-800">طلبك قيد المراجعة</h3>
-                <p className="text-sm text-gray-500 mt-2">
-                  تم تسجيل طلبك بنجاح. سيتم السماح لك بالدخول فور موافقة الإدارة.
-                </p>
-                <div className="mt-4 flex flex-col gap-2">
-                  <button
-                    onClick={handleCheckStatus}
-                    className="text-sm text-[#1E3A8A] underline font-medium"
-                  >
-                    التحقق من حالة القبول
-                  </button>
-                  <button
-                    onClick={() => {
-                      localStorage.removeItem("wem_user");
-                      setIsPending(false);
-                    }}
-                    className="text-xs text-gray-400 underline"
-                  >
-                    العودة لشاشة الدخول
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {showAdminLogin && (
-              <div className="space-y-4 mt-4 pt-4 border-t">
-                <h4 className="font-bold text-sm text-gray-700">تسجيل دخول المشرف</h4>
-                <input
-                  type="password"
-                  value={adminPassInput}
-                  onChange={(e) => setAdminPassInput(e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-gray-800"
-                  placeholder="أدخل كلمة المرور"
-                />
-                <button
-                  onClick={handleVerifyAdmin}
-                  className="w-full bg-gray-800 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-gray-900 transition"
-                >
-                  دخول لوحة التحكم
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* لوحة تحكم المشرف */}
-      {showAdminPanel && (
-        <div className="fixed inset-0 bg-white z-50 p-6 overflow-y-auto">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex flex-wrap justify-between items-center gap-3 mb-6 pb-4 border-b">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-800">لوحة تحكم المشرف - Wem Studio</h2>
-                <p className="text-sm text-gray-500">
-                  إدارة طلبات الانضمام (المشتركين المقبولين:{" "}
-                  <span>{usersDB.filter((u) => u.approved).length}</span>)
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={handleEnterAsAdmin}
-                  className="bg-[#1E3A8A] text-white px-4 py-2 rounded-xl text-sm font-bold shadow hover:bg-blue-900 transition"
-                >
-                  دخول للموقع كمشرفة ✨
-                </button>
-                <button
-                  onClick={() => setShowAdminPanel(false)}
-                  className="bg-gray-200 px-4 py-2 rounded-xl text-sm font-medium hover:bg-gray-300 transition"
-                >
-                  إغلاق اللوحة
-                </button>
-              </div>
-            </div>
-            <div className="bg-gray-50 rounded-2xl p-4 border">
-              <h3 className="font-bold text-gray-700 mb-3">الطلبات المسجلة:</h3>
-              <div className="space-y-3">
-                {usersDB.length === 0 ? (
-                  <p className="text-xs text-gray-400">لا توجد طلبات مسجلة حالياً.</p>
-                ) : (
-                  usersDB.map((u, i) => (
-                    <div
-                      key={i}
-                      className="flex justify-between items-center bg-white p-3 rounded-xl border"
-                    >
-                      <div>
-                        <span className="font-bold text-sm">{u.name}</span>
-                        <span className="text-xs text-gray-500 mr-2">كود: {u.code}</span>
-                        <span
-                          className={`text-xs ${
-                            u.approved ? "text-green-600" : "text-amber-600"
-                          } font-bold mr-2`}
-                        >
-                          ({u.approved ? "مقبول" : "معلق"})
-                        </span>
-                      </div>
-                      {!u.approved && (
-                        <button
-                          onClick={() => handleApproveUser(i)}
-                          className="bg-green-600 text-white text-xs px-3 py-1.5 rounded-lg font-bold"
-                        >
-                          قبول
-                        </button>
-                      )}
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* المحتوى الرئيسي للموقع */}
-      {currentUser && (
         <div className="flex-1 flex flex-col">
           <header className="bg-white border-b px-6 py-4 flex justify-between items-center shadow-sm">
             <div className="flex items-center space-x-3 space-x-reverse">
@@ -389,22 +126,6 @@ export default function WemStudioApp() {
               <span className="font-extrabold text-lg text-[#1E3A8A]">
                 The Language Practice Journal
               </span>
-            </div>
-            <div className="flex items-center space-x-4 space-x-reverse text-sm font-medium text-gray-600">
-              <span>
-                مرحباً، <strong className="text-[#1E3A8A]">{currentUser}</strong>
-              </span>
-              {isAdmin && (
-                <button
-                  onClick={() => setShowAdminPanel(true)}
-                  className="bg-amber-100 text-amber-800 px-3 py-1 rounded-lg text-xs font-bold"
-                >
-                  لوحة المشرف
-                </button>
-              )}
-              <button onClick={handleLogout} className="text-red-500 text-xs underline">
-                خروج
-              </button>
             </div>
           </header>
 
@@ -1052,7 +773,6 @@ export default function WemStudioApp() {
             )}
           </main>
         </div>
-      )}
     </div>
   );
 }
